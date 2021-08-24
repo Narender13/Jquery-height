@@ -1,0 +1,182 @@
+ var fixmeTop;
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("MSIE ");
+    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+        var t = setInterval(function() {
+            function runFunction() {
+                if ($('.rd-ordersummary').length) {
+                    clearInterval(t);
+                    (<any>$('.rd-ordersummary')).addClass('rd-ordersummary--ie');
+                    positionFixIeOrderSummary();
+                }
+            }
+            }, 1000);
+    }
+   
+    function positionFixIeOrderSummary() {
+        //(<any>$(window)).on('load', function () {
+        setTimeout(function () {
+            function runFunction() {
+                leftVal = $('.rd-cartitems').offset().left + $('.rd-cartitems').width() + 39.5
+                if (leftVal > 300) {
+                    clearInterval(t);
+                }
+            }
+            fixmeTop = $('.rd-ordersummary').offset().top - 90;
+            var widthOrederSummary = $('.rd-cart').width() * 0.315625
+            var leftVal = $('.rd-cartitems').offset().left + $('.rd-cartitems').width() + 39.5
+            var t = setInterval(runFunction, 1000);
+
+            var footerDiv = $('#footer-container').position().top - $('.rd-ordersummary').innerHeight() - 90;
+            var cartdivHgt = $(".rd-cart").height() + $(".rd-cart").offset().top - $(".rd-ordersummary").height()
+            console.log(fixmeTop);
+            (<any>$(window)).scroll(function () {
+                var currentScroll = $(window).scrollTop(); // get current position
+                console.log(fixmeTop + "sticky");
+                console.log(currentScroll + "scroll");
+                widthOrederSummary = $('.rd-cart').width() * 0.315625
+                //if (currentScroll >= fixmeTop && currentScroll <= footerDiv) { // apply position: fixed if you
+                if (currentScroll >= fixmeTop && currentScroll <= cartdivHgt) {
+                    $('.rd-ordersummary').css({ // scroll to that element or below it
+                        position: 'fixed',
+                        left: leftVal,
+                        top: 90,
+                        width: widthOrederSummary
+                    });
+                } else { // apply position: static
+                    $('.rd-ordersummary').css({ // if you scroll above it
+                        position: 'static',
+                        width: ''
+                    });
+                }
+            });
+        }, 3000);
+        // })
+
+
+
+<--------------------------------------------------------------------------------------------->
+
+
+      </div>
+            <div class="rd-cart">
+                <div class="cart-left1 rd-cartitems" ng-class="(vm.cart.cartLines.length == 0)  ?'empty-cart-parent': ''">
+                    <div ng-if="vm.cart.cartLines.length == 0" class="cart-empty">
+                        <h3>[% siteMessage 'Cart_NoOrderLines' %]</h3>
+                        <div ng-class="(vm.cart.cartLines.length == 0)  ?'emptyShoppingbtn': 'shoppingbtn'" class="btns continueShoppingText">
+                            <a id="continueShopping" href="[% urlForPage 'HomePage' %]" ng-click="vm.continueShopping($event)" class="btn secondary btn-continue-shopping">[% translate 'Continue Shopping' %]</a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div ng-if="vm.cart.isAwaitingApproval && vm.cart.cartLines.length > 0 " class="app-for">
+                            <h3>[% translate 'Approving Order For' %]: <em ng-bind="vm.cart.initiatedByUserName"></em></h3>
+                        </div>
+                        <div ng-if="vm.cart.quoteRequiredCount > 0 && vm.cart.cartLines.length > 0 " class="quote-items-note messaging">
+                            [% siteMessage 'Rfq_QuoteRequiredMsg' %]
+                        </div>
+
+                        <div ng-show="vm.cart.hasInsufficientInventory && vm.cart.cartLines.length > 0 " class="messaging--error">
+                            [% siteMessage 'Cart_InsufficientInventoryAtCheckout' %]
+                        </div>
+                        <div id="cartgrid">
+
+                            <div class="shoppingCartTitle" ng-if="vm.cart.cartLines.length > 0 ">
+                                <div class="cartItem-title">[% translate 'Items' %]</div>
+                                <div class="cartQty-title">[% translate 'QTY / PRICE' %]</div>
+                                <div class="cartTotalPrice-title">[% translate 'Total' %]</div>
+                            </div>
+                            <isc-adiglobal-cart-lines cart="vm.cart" editable="true"
+                                                      include-quote-required="true"
+                                                      is-cart-page="true"
+                                                      include-inventory="vm.showInventoryAvailability"
+                                                      inventory-check="true">
+                            </isc-adiglobal-cart-lines>
+                        </div>
+                        <div ng-if="vm.cart.cartLines.length > 0" class="cart-right1 cartMaterialTotalDiv materialtotaldisplay">
+                            <div class="btns hide-for-print">
+                                <div class="row order-total">
+                                    <div id="cartOrderGrandTotalDisplay"
+                                         ng-if="!(vm.cart.properties['hasZeroPrice'] =='true')"
+                                         class="small-6 columns sub-amount cartMaterialTotal"
+                                         ng-bind='vm.cart.orderSubTotalWithOutProductDiscountsDisplay'></div>
+                                    <div ng-if="!(vm.cart.properties['hasZeroPrice'] =='true')"
+                                         class="small-6 columns sub-label cartMaterialText">[% translate 'Material Total' %]:</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="vm.cart.cartLines.length > 0" class="rd-ordersummary">
+                    <div class="rd-ordersummary__inner">
+                        <div class="rd-ordersummary__header">
+                            [% translate 'ORDER SUMMARY' %]
+                        </div>
+                        <div class="shipping-countdown blue-theme  rd-ordersummary__shipping-countdown"
+                             ng-class="(vm.wantFreeShip)  ?'rd-ordersummary__shipping-countdown--wfs': 'rd-ordersummary__shipping-countdown--fd'"
+                             ng-show="vm.wantFreeShip || vm.qualifedFreeShip">
+                            <div ng-if="vm.wantFreeShip" class="rd-ordersummary__shipping-wantfree">
+                                <span ng-if="vm.thresholdAmt > 0">
+                                    <img src="[% cdnUrl '/Themes/ADIGlobal/Images/icons/icon-delivery-estimate.svg''/userfiles/Images/Themes/icons/icon-delivery-estimate.svg' %]">
+                                    [% translate 'Add' %] ${{vm.eligibleAmt}} [% translate 'more for' %] <strong>[% translate 'Free Delivery!' %]</strong>
+                                    <a href="javascript:void(0)" class="rd-os-learnmore" data-reveal-id="" ng-click="vm.openShippingCountDownPopup()">[% translate 'Learn More' %]</a>
+                                </span>
+                                <span ng-if="vm.thresholdAmt == 0">
+                                    <img src="[% cdnUrl '/Themes/ADIGlobal/Images/icons/icon-delivery-estimate.svg''/userfiles/Images/Themes/icons/icon-delivery-estimate.svg' %]">
+                                    [% translate 'Your account qualifies for free shipping on all orders.' %]
+                                    <a href="javascript:void(0)" class="rd-os-learnmore" data-reveal-id="" ng-click="vm.openShippingCountDownPopup()">[% translate 'Learn More' %]</a>
+                                </span>
+
+                            </div>
+                            <div ng-if="vm.qualifedFreeShip" class="rd-ordersummary__shipping-free">
+                                <span>
+                                    <img src="[% cdnUrl '/Themes/ADIGlobal/Images/icons/icon-delivery-estimate.svg''/userfiles/Images/Themes/icons/icon-delivery-estimate.svg' %]">
+                                    [% translate 'You get_cart' %] <strong> [% translate 'Free Delivery' %]</strong> [% translate 'on this order!' %]
+                                    <a href="javascript:void(0)" class="rd-os-learnmore" data-reveal-id="" ng-click="vm.openShippingCountDownPopup()">[% translate 'Learn More' %]</a>
+                                </span>
+                            </div>
+                            <!-- <div ng-if="vm.qualifedFreeShip" class="rd-ordersummary__shipping-free rd-ordersummary__shipping-free--french">
+                        <span style="display:block !important;">
+                            <img class="rd-ordersummary-truckicon" src="[% cdnUrl '/Themes/ADIGlobal/Images/icons/icon-delivery-estimate.svg''/userfiles/Images/Themes/icons/icon-delivery-estimate.svg' %]">[% translate 'You get_cart' %]<strong>[% translate 'Free Delivery' %]</strong> [% translate 'on this order!' %]
+                            <a href="javascript:void(0)" class="rd-os-learnmore" data-reveal-id="" ng-click="vm.openShippingCountDownPopup()">[% translate 'Learn More' %]</a>
+                        </span>
+                    </div> -->
+                        </div>
+                        <div class="rd-ordersummary__subtotal-shipping" ng-if="vm.cart.cartLines.length > 0">
+                            <div class="rd-ordersummary__subtotal">
+                                <div class="rd-ordersummary__subtotal-label">[% translate 'Material Subtotal*' %]</div>
+                                <div class="rd-ordersummary__subtotal-number"
+                                     ng-if="!(vm.cart.properties['hasZeroPrice'] =='true')"
+                                     ng-bind='vm.cart.orderSubTotalWithOutProductDiscountsDisplay'>
+                                </div>
+                            </div>
+                            <div class="rd-ordersummary__shipping">
+                                <div class="rd-ordersummary__shipping-label">[% translate 'Shipping' %]</div>
+                                <div class="rd-ordersummary__shipping-cost" ng-if="vm.qualifedFreeShip">[% translate 'FREE' %]</div>
+                                <div class="rd-ordersummary__shipping-cost" ng-if="!vm.qualifedFreeShip">—</div>
+                            </div>
+                        </div>
+                        <div class="rd-ordersummary__shippingmsg" ng-if="vm.cart.cartLines.length > 0">
+                            [% translate '* Final shipping and tax will be determined during checkout.' %]
+                        </div>
+                        <div class="rd-ordersummary__checkout-outer" ng-if="vm.cart.cartLines.length > 0">
+                            <button class="rd-ordersummary__checkout-button" ng-if="vm.cart.canCheckOut && !vm.cart.properties['isPunchout']"
+                                    ng-class="(vm.cart.properties['hasZeroPrice'] =='true')  ?'disabled': ''"
+                                    ng-click="vm.checkNcodedProducts()">
+                                [% translate 'CHECKOUT' %]
+                            </button>
+                            <button class="rd-ordersummary__checkout-button" ng-if="vm.cart.properties['isPunchout']"
+                                    ng-href="/api/v1/punchout/porequisition" isc-full-redirect >
+                                [% translate 'Transmit' %]
+                            </button>
+                        </div>
+                        <span ng-if="vm.cart.cartLines.length > 0" class="rd-ordersummary__req-quote">
+                            <a href="[% urlForPage 'RequestQuoteFormPage' %]?quoteRequestFrom=cartList" class="request-quote-link rd-ordersummary__req-quote-link">[% translate 'Request Quote from Cart' %]</a>
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <isc-saved-items cart="vm.cart"></isc-saved-items>
+                </div>
+            </div>
+   

@@ -1,0 +1,80 @@
+function calculateToolbarHeight() {
+
+    var wrapperHeight = 0;
+    var imageContainerHeight = 0;
+    var titleContainerHeight = 0;
+    var textContainerHeight = 0;
+    var linkContainerHeight = 0;
+
+    var tileWrapper = $('.link-toolbar .link-toolbar-item');
+    if (tileWrapper != undefined && tileWrapper != null) {
+        tileWrapper.find('a img').outerHeight("auto");
+        tileWrapper.find('.link-toolbar-header').outerHeight("auto");
+        tileWrapper.find('.bodytext').outerHeight("auto");
+        tileWrapper.find('.best-selling-item-link').outerHeight("auto");
+        tileWrapper.outerHeight("auto");
+
+        tileWrapper.each(function () {
+
+            if ($(this).outerHeight() > wrapperHeight) {
+                wrapperHeight = $(this).outerHeight();
+            }
+            if ($(this).find('a img').outerHeight() > imageContainerHeight) {
+                imageContainerHeight = $(this).find('a img').outerHeight();
+            }
+            if ($(this).find('.link-toolbar-header').outerHeight() > titleContainerHeight) {
+                titleContainerHeight = $(this).find('.link-toolbar-header').outerHeight();
+            }
+            if ($(this).find('.bodytext').outerHeight() > textContainerHeight) {
+                textContainerHeight = $(this).find('.bodytext').outerHeight();
+            }
+          if ($(this).find('.link-toolbar-link').outerHeight() > linkContainerHeight) {
+                linkContainerHeight = $(this).find('.link-toolbar-link').outerHeight();
+            }
+        });
+        wrapperHeight = imageContainerHeight + titleContainerHeight + textContainerHeight + linkContainerHeight;
+        $('.link-toolbar-item').outerHeight(wrapperHeight);
+        tileWrapper.outerHeight(wrapperHeight);
+        tileWrapper.find('a img').outerHeight(imageContainerHeight);
+        tileWrapper.find('.link-toolbar-header').outerHeight(titleContainerHeight);
+        tileWrapper.find('.bodytext').outerHeight(textContainerHeight);
+        tileWrapper.find('.link-toolbar-link').outerHeight(linkContainerHeight);
+    }
+}
+$(document).ready(calculateToolbarHeight);
+$(window).resize(calculateToolbarHei
+
+
+
+
+
+bxf97fik74
+
+
+URL: https://staging.dev.adiglobaldistribution.us/
+
+User Name: NADevTest
+
+Password: Adminna123
+[Yesterday 8:23 PM] Sivagamy, Selvaraj
+
+username:ntukunt
+
+
+
+[Yesterday 8:24 PM] Sivagamy, Selvaraj
+
+pwd: Admin45678
+
+
+Username  - NADevtest
+Password- Adminna123
+
+
+
+
+
+
+
+
+
